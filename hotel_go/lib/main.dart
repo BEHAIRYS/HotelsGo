@@ -14,6 +14,20 @@ final theme = ThemeData().copyWith(
     clipBehavior: Clip.hardEdge,
     shadowColor: Colors.black45,
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    fillColor: Colors.white,
+    filled: true,
+    labelStyle: TextStyle(
+      color: colorScheme.onPrimaryContainer,
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15),
+      borderSide: const BorderSide(
+        color: Colors.blue, // Color of the border
+        width: 2.0, // Width of the border
+      ),
+    ),
+  ),
 );
 void main() {
   runApp(const MyApp());

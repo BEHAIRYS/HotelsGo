@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_go/Widgets/Form.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -17,11 +18,11 @@ class SearchScreen_state extends State<SearchScreen> {
         children: [
           Image.asset('lib/assets/images/Background.webp',
               fit: BoxFit.cover, alignment: Alignment.topRight),
-          Positioned(
+          const Positioned(
             bottom: 0,
             left: 0,
             right: 0,
-            child: Text('data'),
+            child: FormWidget(),
           )
         ],
       ),
