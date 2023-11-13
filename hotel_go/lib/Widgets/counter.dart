@@ -26,12 +26,13 @@ class Counter_state extends State<Counter> {
       count = Provider.of<RoomProvider>(context, listen: false).rooms.length;
     }
     if (widget.label == 'Children') {
-      Provider.of<ChildrenProvider>(context, listen: false)
-          .childrenByRoom
-          .forEach((room, children) {
-        int length = children.length;
-        count = length;
-      });
+      List<Children>? childrenList =
+          Provider.of<ChildrenProvider>(context, listen: false)
+              .childrenByRoom[widget.roomId];
+
+      if (childrenList != null) {
+        count = childrenList.length;
+      }
     }
     if (widget.label == 'Adult') {}
     return count.toString();
