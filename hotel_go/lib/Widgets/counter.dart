@@ -20,6 +20,7 @@ class Counter extends StatefulWidget {
 }
 
 class Counter_state extends State<Counter> {
+  int adultCount = 1;
   String counterValue() {
     int count = 0;
     if (widget.label == 'Rooms') {
@@ -34,7 +35,7 @@ class Counter_state extends State<Counter> {
         count = childrenList.length;
       }
     }
-    if (widget.label == 'Adult') {}
+
     return count.toString();
   }
 
@@ -51,7 +52,9 @@ class Counter_state extends State<Counter> {
               icon: const Icon(Icons.remove_circle_outline_sharp),
             ),
             const SizedBox(width: 7),
-            Text(counterValue()),
+            Text(
+              widget.label == 'Adults' ? adultCount.toString() : counterValue(),
+            ),
             const SizedBox(width: 7),
             IconButton(
               onPressed: _add,
@@ -64,7 +67,11 @@ class Counter_state extends State<Counter> {
   }
 
   void _remove() {
-    setState(() {});
+    if (widget.label == 'Adults') {
+      setState(() {
+        adultCount--;
+      });
+    }
     if (widget.label == 'Rooms') {
       Provider.of<RoomProvider>(context, listen: false).removeRoom(widget.type);
     }
@@ -75,7 +82,12 @@ class Counter_state extends State<Counter> {
   }
 
   void _add() {
-    setState(() {});
+    if (widget.label == 'Adults') {
+      setState(() {
+        adultCount++;
+      });
+    }
+
     if (widget.label == 'Rooms') {
       Room room = widget.type;
       Provider.of<RoomProvider>(context, listen: false).addRoom(room);

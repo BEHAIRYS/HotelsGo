@@ -45,20 +45,23 @@ class RoomOverlayState extends State<RoomOverlay> {
           _childAgeControllers.add(controller);
 
           childrenAges.add(
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Age of Child ${i + 1}'),
-                Container(
-                  width: 80,
-                  height: 40,
-                  margin: const EdgeInsets.all(7),
-                  child: TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.number,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Age of Child ${i + 1}'),
+                  Container(
+                    width: 80,
+                    height: 40,
+                    margin: const EdgeInsets.all(7),
+                    child: TextField(
+                      controller: controller,
+                      keyboardType: TextInputType.number,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }
@@ -110,67 +113,93 @@ class RoomOverlayState extends State<RoomOverlay> {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: _rooms.length,
+              itemCount: _rooms.length + 1, // +1 for the Switch container
               itemBuilder: (context, index) {
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(22.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Room ${index + 1}'),
-                        Counter(
-                          label: 'Adults',
-                          type: null,
-                          key: UniqueKey(),
-                        ),
-                        Counter(
-                          label: 'Children',
-                          type: const Children(),
-                          key: UniqueKey(),
-                          roomId: _rooms[index].id,
-                        ),
-                        _childAge(_rooms[index].id),
-                      ],
+                if (index == _rooms.length) {
+                  // This is the Switch container
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
-                );
+                    margin: EdgeInsets.all(10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Pet Friendly'),
+                                  SizedBox(
+                                    width: 7,
+                                  ),
+                                  Icon(Icons.info_outline_rounded),
+                                ],
+                              ),
+                              Text('Only show stays that allow pets'),
+                            ],
+                          ),
+                          Switch(
+                            value: isPetFriendly,
+                            onChanged: (value) {
+                              setState(() {
+                                isPetFriendly = value;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  // This is the Card container
+                  return Container(
+                    margin: EdgeInsets.all(10),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(22.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Room ${index + 1}'),
+                            Counter(
+                              label: 'Adults',
+                              type: null,
+                              key: UniqueKey(),
+                            ),
+                            Counter(
+                              label: 'Children',
+                              type: const Children(),
+                              key: UniqueKey(),
+                              roomId: _rooms[index].id,
+                            ),
+                            _childAge(_rooms[index].id),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: EdgeInsets.all(10),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text('Pet Friendly'),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Icon(Icons.info_outline_rounded),
-                        ],
-                      ),
-                      Text('Only show stays that allow pets'),
-                    ],
-                  ),
-                  Switch(
-                    value: isPetFriendly,
-                    onChanged: (value) {},
-                  ),
-                ],
+            margin: const EdgeInsets.all(10),
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(
+                  Theme.of(context).colorScheme.primary,
+                ),
+                foregroundColor: const MaterialStatePropertyAll(Colors.white),
               ),
+              child: const Text('Apply'),
             ),
-          ),
+          )
         ],
       ),
     );
