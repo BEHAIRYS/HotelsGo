@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:hotel_go/Screens/SearchScreen.dart';
+import 'package:provider/provider.dart';
 
 final colorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blueAccent,
@@ -30,7 +32,12 @@ final theme = ThemeData().copyWith(
   ),
 );
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => RoomProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

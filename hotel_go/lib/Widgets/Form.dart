@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:country_list_pick/country_list_pick.dart';
 import 'package:hotel_go/Widgets/clipper.dart';
+import 'package:hotel_go/Widgets/room.dart';
 
 class FormWidget extends StatefulWidget {
   const FormWidget({super.key});
@@ -38,6 +39,15 @@ class _FormState extends State<FormWidget> {
             '${_selectedStartDate!.toLocal()} ==> ${_selectedEndDate!.toLocal()}';
       });
     }
+  }
+
+  void _roomsAndGuests() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return RoomOverlay();
+      },
+    );
   }
 
   @override
@@ -147,6 +157,22 @@ class _FormState extends State<FormWidget> {
                           });
                         }),
                   ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _roomsAndGuests,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('data'),
+                          Icon(Icons.arrow_drop_down_outlined)
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -156,15 +182,20 @@ class _FormState extends State<FormWidget> {
           margin: const EdgeInsets.fromLTRB(14, 0, 14, 7),
           width: double.infinity,
           child: ElevatedButton.icon(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-              backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.orangeAccent,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
+              ),
             ),
             onPressed: () {},
             icon: const Icon(Icons.search),
             label: const Text('Find Hotels'),
           ),
-        )
+        ),
       ],
     );
   }
