@@ -1,3 +1,6 @@
+import 'package:hotel_go/Data/Children.dart';
+
 class Room {
-  const Room();
+  final String id;
+  Room({required this.id});
 }

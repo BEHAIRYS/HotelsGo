@@ -1,13 +1,18 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:hotel_go/Data/Children.dart';
+import 'package:hotel_go/Data/Room.dart';
 import 'package:hotel_go/Providers/ChildrenProvider.dart';
 import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:provider/provider.dart';
 
 class Counter extends StatefulWidget {
-  Counter({super.key, required this.label, required this.type}) : count = 1;
+  Counter({Key? key, required this.label, required this.type, this.roomId})
+      : super(key: key);
   final String label;
-  int count;
   final type;
+  String? roomId;
   @override
   State<StatefulWidget> createState() {
     return Counter_state();
@@ -15,6 +20,23 @@ class Counter extends StatefulWidget {
 }
 
 class Counter_state extends State<Counter> {
+  String counterValue() {
+    int count = 0;
+    if (widget.label == 'Rooms') {
+      count = Provider.of<RoomProvider>(context, listen: false).rooms.length;
+    }
+    if (widget.label == 'Children') {
+      Provider.of<ChildrenProvider>(context, listen: false)
+          .childrenByRoom
+          .forEach((room, children) {
+        int length = children.length;
+        count = length;
+      });
+    }
+    if (widget.label == 'Adult') {}
+    return count.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -28,9 +50,7 @@ class Counter_state extends State<Counter> {
               icon: const Icon(Icons.remove_circle_outline_sharp),
             ),
             const SizedBox(width: 7),
-            Text(
-              widget.count.toString(),
-            ),
+            Text(counterValue()),
             const SizedBox(width: 7),
             IconButton(
               onPressed: _add,
@@ -43,28 +63,25 @@ class Counter_state extends State<Counter> {
   }
 
   void _remove() {
-    setState(() {
-      widget.count--;
-    });
+    setState(() {});
     if (widget.label == 'Rooms') {
       Provider.of<RoomProvider>(context, listen: false).removeRoom(widget.type);
     }
     if (widget.label == 'Children') {
       Provider.of<ChildrenProvider>(context, listen: false)
-          .removeChild(widget.type);
+          .removeChildForRoom(widget.roomId!, const Children());
     }
   }
 
   void _add() {
-    setState(() {
-      widget.count++;
-    });
+    setState(() {});
     if (widget.label == 'Rooms') {
-      Provider.of<RoomProvider>(context, listen: false).addRoom(widget.type);
+      Room room = widget.type;
+      Provider.of<RoomProvider>(context, listen: false).addRoom(room);
     }
     if (widget.label == 'Children') {
       Provider.of<ChildrenProvider>(context, listen: false)
-          .addChild(widget.type);
+          .addChildForRoom(widget.roomId!, const Children());
     }
   }
 }

@@ -1,0 +1,3 @@
+class Adult {
+  const Adult();
+}

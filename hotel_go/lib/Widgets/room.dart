@@ -17,39 +17,52 @@ class RoomOverlay extends StatefulWidget {
 
 class RoomOverlayState extends State<RoomOverlay> {
   List<Room> _rooms = [];
-  List<Children> _children = [];
+  Map<String, List<Children>> _children = {};
+  bool isPetFriendly = false;
 
   @override
   void initState() {
     super.initState();
-    _rooms.add(const Room());
+    _rooms.add(
+      Room(
+        id: UniqueKey().toString(),
+      ),
+    );
   }
 
   final List<TextEditingController> _childAgeControllers = [];
 
-  Widget _childAge() {
+  Widget _childAge(String id) {
     List<Widget> childrenAges = [];
 
-    for (final child in _children) {
-      TextEditingController controller = TextEditingController();
-      _childAgeControllers.add(controller);
-      childrenAges.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Age of child ${_children.indexOf(child)}'),
-            Container(
-              width: 80,
-              height: 40,
-              margin: const EdgeInsets.all(7),
-              child: TextField(
-                controller: controller,
-                keyboardType: TextInputType.number,
-              ),
+    for (final MapEntry<String, List<Children>> entry in _children.entries) {
+      String roomId = entry.key;
+      if (roomId == id) {
+        List<Children> childrenList = entry.value;
+
+        for (int i = 0; i < childrenList.length; i++) {
+          TextEditingController controller = TextEditingController();
+          _childAgeControllers.add(controller);
+
+          childrenAges.add(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Age of Child ${i + 1}'),
+                Container(
+                  width: 80,
+                  height: 40,
+                  margin: const EdgeInsets.all(7),
+                  child: TextField(
+                    controller: controller,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      );
+          );
+        }
+      }
     }
 
     return Column(
@@ -62,7 +75,7 @@ class RoomOverlayState extends State<RoomOverlay> {
   @override
   Widget build(BuildContext context) {
     _rooms = Provider.of<RoomProvider>(context).rooms;
-    _children = Provider.of<ChildrenProvider>(context).children;
+    _children = Provider.of<ChildrenProvider>(context).childrenByRoom;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -88,8 +101,10 @@ class RoomOverlayState extends State<RoomOverlay> {
             margin: const EdgeInsets.all(10),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22.0),
-              child:
-                  Counter(label: 'Rooms', type: const Room(), key: UniqueKey()),
+              child: Counter(
+                  label: 'Rooms',
+                  type: Room(id: UniqueKey().toString()),
+                  key: UniqueKey()),
             ),
           ),
           Expanded(
@@ -106,21 +121,56 @@ class RoomOverlayState extends State<RoomOverlay> {
                         Text('Room ${index + 1}'),
                         Counter(
                           label: 'Adults',
-                          type: const Room(),
+                          type: null,
+                          key: UniqueKey(),
                         ),
                         Counter(
                           label: 'Children',
                           type: const Children(),
                           key: UniqueKey(),
+                          roomId: _rooms[index].id,
                         ),
-                        _childAge(),
+                        _childAge(_rooms[index].id),
                       ],
                     ),
                   ),
                 );
               },
             ),
-          )
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: EdgeInsets.all(10),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text('Pet Friendly'),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Icon(Icons.info_outline_rounded),
+                        ],
+                      ),
+                      Text('Only show stays that allow pets'),
+                    ],
+                  ),
+                  Switch(
+                    value: isPetFriendly,
+                    onChanged: (value) {},
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

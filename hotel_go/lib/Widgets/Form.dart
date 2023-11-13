@@ -43,9 +43,13 @@ class _FormState extends State<FormWidget> {
 
   void _roomsAndGuests() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return RoomOverlay();
+        return FractionallySizedBox(
+          heightFactor: 0.9,
+          child: RoomOverlay(),
+        );
       },
     );
   }

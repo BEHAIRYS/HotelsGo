@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:hotel_go/Data/Children.dart';
 
 class ChildrenProvider extends ChangeNotifier {
-  List<Children> _children = [];
+  Map<String, List<Children>> _childrenByRoom = {};
 
-  List<Children> get children => _children;
+  Map<String, List<Children>> get childrenByRoom => _childrenByRoom;
 
-  void addChild(Children child) {
-    _children.add(child);
+  void addChildForRoom(String roomId, Children child) {
+    if (!_childrenByRoom.containsKey(roomId)) {
+      _childrenByRoom[roomId] = [];
+    }
+
+    _childrenByRoom[roomId]!.add(child);
     notifyListeners();
   }
 
-  void removeChild(Children child) {
-    _children.removeLast();
-    notifyListeners();
+  void removeChildForRoom(String roomId, Children child) {
+    if (_childrenByRoom.containsKey(roomId)) {
+      _childrenByRoom[roomId]!.remove(child);
+      notifyListeners();
+    }
   }
 }
