@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_go/Data/Adult.dart';
 import 'package:hotel_go/Data/Children.dart';
 import 'package:hotel_go/Data/Room.dart';
+import 'package:hotel_go/Providers/AdultProvider.dart';
 import 'package:hotel_go/Providers/ChildrenProvider.dart';
 import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:provider/provider.dart';
@@ -68,6 +70,9 @@ class Counter_state extends State<Counter> {
 
   void _remove() {
     if (widget.label == 'Adults') {
+      Provider.of<AdultProvider>(context, listen: false).removeAdult(
+        const Adult(),
+      );
       setState(() {
         adultCount--;
       });
@@ -83,6 +88,9 @@ class Counter_state extends State<Counter> {
 
   void _add() {
     if (widget.label == 'Adults') {
+      Provider.of<AdultProvider>(context, listen: false).addAdult(
+        const Adult(),
+      );
       setState(() {
         adultCount++;
       });

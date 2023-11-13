@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:country_list_pick/country_list_pick.dart';
+import 'package:hotel_go/Providers/AdultProvider.dart';
 import 'package:hotel_go/Providers/ChildrenProvider.dart';
 import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:hotel_go/Widgets/clipper.dart';
@@ -63,6 +64,7 @@ class _FormState extends State<FormWidget> {
     int _adults = 0;
     int _rooms = 0;
     int _children = 0;
+    _adults = Provider.of<AdultProvider>(context).adults.length;
     _rooms = Provider.of<RoomProvider>(context).rooms.length;
     Provider.of<ChildrenProvider>(context)
         .childrenByRoom

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hotel_go/Providers/AdultProvider.dart';
 import 'package:hotel_go/Providers/ChildrenProvider.dart';
 import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:hotel_go/Screens/SearchScreen.dart';
@@ -41,6 +42,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => ChildrenProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AdultProvider(),
         ),
       ],
       child: MyApp(),
