@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:hotel_go/Data/Children.dart';
 import 'package:hotel_go/Data/Room.dart';
@@ -48,6 +46,7 @@ class Counter_state extends State<Counter> {
         Row(
           children: [
             IconButton(
+              color: Theme.of(context).colorScheme.primary,
               onPressed: _remove,
               icon: const Icon(Icons.remove_circle_outline_sharp),
             ),
@@ -57,6 +56,7 @@ class Counter_state extends State<Counter> {
             ),
             const SizedBox(width: 7),
             IconButton(
+              color: Theme.of(context).colorScheme.primary,
               onPressed: _add,
               icon: const Icon(Icons.add_circle_outline_sharp),
             ),

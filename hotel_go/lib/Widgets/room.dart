@@ -23,11 +23,6 @@ class RoomOverlayState extends State<RoomOverlay> {
   @override
   void initState() {
     super.initState();
-    _rooms.add(
-      Room(
-        id: UniqueKey().toString(),
-      ),
-    );
   }
 
   final List<TextEditingController> _childAgeControllers = [];
@@ -50,12 +45,20 @@ class RoomOverlayState extends State<RoomOverlay> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Age of Child ${i + 1}'),
+                  Text(
+                    'Age of Child ${i + 1}',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                   Container(
                     width: 80,
                     height: 40,
                     margin: const EdgeInsets.all(7),
                     child: TextField(
+                      onChanged: (value) {
+                        controller.text = '$value years';
+                      },
                       controller: controller,
                       keyboardType: TextInputType.number,
                     ),
@@ -81,6 +84,11 @@ class RoomOverlayState extends State<RoomOverlay> {
     _children = Provider.of<ChildrenProvider>(context).childrenByRoom;
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20.0),
+          ),
+        ),
         centerTitle: true,
         title: const Text('Rooms and Guests'),
         automaticallyImplyLeading: false,
@@ -129,6 +137,7 @@ class RoomOverlayState extends State<RoomOverlay> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
@@ -164,7 +173,15 @@ class RoomOverlayState extends State<RoomOverlay> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Room ${index + 1}'),
+                            Text(
+                              'Room ${index + 1}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                             Counter(
                               label: 'Adults',
                               type: null,
@@ -190,7 +207,9 @@ class RoomOverlayState extends State<RoomOverlay> {
             margin: const EdgeInsets.all(10),
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               style: ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll(
                   Theme.of(context).colorScheme.primary,

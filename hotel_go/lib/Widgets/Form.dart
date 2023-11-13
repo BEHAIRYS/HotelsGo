@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:country_list_pick/country_list_pick.dart';
+import 'package:hotel_go/Providers/ChildrenProvider.dart';
+import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:hotel_go/Widgets/clipper.dart';
 import 'package:hotel_go/Widgets/room.dart';
+import 'package:provider/provider.dart';
 
 class FormWidget extends StatefulWidget {
   const FormWidget({super.key});
@@ -44,6 +47,7 @@ class _FormState extends State<FormWidget> {
   void _roomsAndGuests() {
     showModalBottomSheet(
       isScrollControlled: true,
+      isDismissible: true,
       context: context,
       builder: (context) {
         return FractionallySizedBox(
@@ -56,6 +60,15 @@ class _FormState extends State<FormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    int _adults = 0;
+    int _rooms = 0;
+    int _children = 0;
+    _rooms = Provider.of<RoomProvider>(context).rooms.length;
+    Provider.of<ChildrenProvider>(context)
+        .childrenByRoom
+        .forEach((room, children) {
+      _children = (_children! + children.length);
+    });
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,11 +181,13 @@ class _FormState extends State<FormWidget> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: _roomsAndGuests,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('data'),
-                          Icon(Icons.arrow_drop_down_outlined)
+                          Text(_rooms == 0
+                              ? 'Pick Your Rooms'
+                              : '$_rooms Room, $_adults Adult, $_children Children'),
+                          const Icon(Icons.arrow_drop_down_outlined)
                         ],
                       ),
                     ),
