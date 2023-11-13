@@ -39,6 +39,7 @@ dependencies:
   country_list_pick: 1.0.1+6
   provider: ^6.1.1
   riverpod: ^2.4.5
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

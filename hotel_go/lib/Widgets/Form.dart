@@ -5,6 +5,7 @@ import 'package:hotel_go/Providers/ChildrenProvider.dart';
 import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:hotel_go/Widgets/clipper.dart';
 import 'package:hotel_go/Widgets/room.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class FormWidget extends StatefulWidget {
@@ -39,8 +40,12 @@ class _FormState extends State<FormWidget> {
       setState(() {
         _selectedStartDate = picked.start;
         _selectedEndDate = picked.end;
-        _dateController.text =
-            '${_selectedStartDate!.toLocal()} ==> ${_selectedEndDate!.toLocal()}';
+
+        String formattedStartDate =
+            DateFormat('yyyy-MM-dd').format(_selectedStartDate!);
+        String formattedEndDate =
+            DateFormat('yyyy-MM-dd').format(_selectedEndDate!);
+        _dateController.text = '$formattedStartDate ==> $formattedEndDate';
       });
     }
   }
@@ -202,7 +207,7 @@ class _FormState extends State<FormWidget> {
         Container(
           margin: const EdgeInsets.fromLTRB(14, 0, 14, 7),
           width: double.infinity,
-          child: ElevatedButton.icon(
+          child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: Colors.orangeAccent,
@@ -213,8 +218,16 @@ class _FormState extends State<FormWidget> {
               ),
             ),
             onPressed: () {},
-            icon: const Icon(Icons.search),
-            label: const Text('Find Hotels'),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Find Hotels'),
+                SizedBox(
+                  width: 7,
+                ),
+                Icon(Icons.search),
+              ],
+            ),
           ),
         ),
       ],

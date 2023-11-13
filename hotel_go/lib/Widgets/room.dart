@@ -26,10 +26,8 @@ class RoomOverlayState extends State<RoomOverlay> {
   }
 
   final List<TextEditingController> _childAgeControllers = [];
-
   Widget _childAge(String id) {
     List<Widget> childrenAges = [];
-
     for (final MapEntry<String, List<Children>> entry in _children.entries) {
       String roomId = entry.key;
       if (roomId == id) {
@@ -56,10 +54,12 @@ class RoomOverlayState extends State<RoomOverlay> {
                     height: 40,
                     margin: const EdgeInsets.all(7),
                     child: TextField(
-                      onChanged: (value) {
-                        controller.text = '$value years';
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                      onSubmitted: (value) {
+                        controller.text += ' years';
                       },
-                      controller: controller,
+                      controller: _childAgeControllers.elementAt(i),
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -70,7 +70,6 @@ class RoomOverlayState extends State<RoomOverlay> {
         }
       }
     }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -84,7 +83,7 @@ class RoomOverlayState extends State<RoomOverlay> {
     _children = Provider.of<ChildrenProvider>(context).childrenByRoom;
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20.0),
           ),
