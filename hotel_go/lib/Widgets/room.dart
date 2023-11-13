@@ -1,7 +1,9 @@
 // Import necessary packages and files
 
 import 'package:flutter/material.dart';
+import 'package:hotel_go/Data/Children.dart';
 import 'package:hotel_go/Data/Room.dart';
+import 'package:hotel_go/Providers/ChildrenProvider.dart';
 import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:hotel_go/Widgets/counter.dart';
 import 'package:provider/provider.dart';
@@ -15,30 +17,31 @@ class RoomOverlay extends StatefulWidget {
 
 class RoomOverlayState extends State<RoomOverlay> {
   List<Room> _rooms = [];
+  List<Children> _children = [];
 
   @override
   void initState() {
+    super.initState();
     _rooms.add(const Room());
   }
 
-  int _adults = 1;
-  int _children = 1;
-  List<TextEditingController> _childAgeControllers = [];
+  final List<TextEditingController> _childAgeControllers = [];
 
   Widget _childAge() {
     List<Widget> childrenAges = [];
 
-    for (int i = 1; i <= _children; i++) {
+    for (final child in _children) {
       TextEditingController controller = TextEditingController();
       _childAgeControllers.add(controller);
       childrenAges.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Age of child $i'),
+            Text('Age of child ${_children.indexOf(child)}'),
             Container(
               width: 80,
               height: 40,
+              margin: const EdgeInsets.all(7),
               child: TextField(
                 controller: controller,
                 keyboardType: TextInputType.number,
@@ -59,6 +62,7 @@ class RoomOverlayState extends State<RoomOverlay> {
   @override
   Widget build(BuildContext context) {
     _rooms = Provider.of<RoomProvider>(context).rooms;
+    _children = Provider.of<ChildrenProvider>(context).children;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -84,7 +88,8 @@ class RoomOverlayState extends State<RoomOverlay> {
             margin: const EdgeInsets.all(10),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22.0),
-              child: Counter(label: 'Rooms', type: Room(), key: UniqueKey()),
+              child:
+                  Counter(label: 'Rooms', type: const Room(), key: UniqueKey()),
             ),
           ),
           Expanded(
@@ -101,11 +106,12 @@ class RoomOverlayState extends State<RoomOverlay> {
                         Text('Room ${index + 1}'),
                         Counter(
                           label: 'Adults',
-                          type: Room(),
+                          type: const Room(),
                         ),
                         Counter(
                           label: 'Children',
-                          type: Room(),
+                          type: const Children(),
+                          key: UniqueKey(),
                         ),
                         _childAge(),
                       ],

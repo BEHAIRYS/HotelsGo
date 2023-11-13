@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_go/Providers/ChildrenProvider.dart';
 import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +49,10 @@ class Counter_state extends State<Counter> {
     if (widget.label == 'Rooms') {
       Provider.of<RoomProvider>(context, listen: false).removeRoom(widget.type);
     }
+    if (widget.label == 'Children') {
+      Provider.of<ChildrenProvider>(context, listen: false)
+          .removeChild(widget.type);
+    }
   }
 
   void _add() {
@@ -56,6 +61,10 @@ class Counter_state extends State<Counter> {
     });
     if (widget.label == 'Rooms') {
       Provider.of<RoomProvider>(context, listen: false).addRoom(widget.type);
+    }
+    if (widget.label == 'Children') {
+      Provider.of<ChildrenProvider>(context, listen: false)
+          .addChild(widget.type);
     }
   }
 }

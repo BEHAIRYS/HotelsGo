@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hotel_go/Providers/ChildrenProvider.dart';
 import 'package:hotel_go/Providers/RoomProvider.dart';
 import 'package:hotel_go/Screens/SearchScreen.dart';
 import 'package:provider/provider.dart';
@@ -33,8 +34,15 @@ final theme = ThemeData().copyWith(
 );
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => RoomProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => RoomProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChildrenProvider(),
+        ),
+      ],
       child: MyApp(),
     ),
   );

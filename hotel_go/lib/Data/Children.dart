@@ -1,0 +1,3 @@
+class Children {
+  const Children();
+}
